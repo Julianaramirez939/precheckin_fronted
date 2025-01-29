@@ -1,0 +1,416 @@
+<div
+  class="modal fade"
+  id="editModal"
+  tabindex="-1"
+  aria-labelledby="editModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Encabezado del modal -->
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Editar Huésped</h5>
+        <!-- Botón para cerrar el modal -->
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal" data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <!-- Cuerpo del modal -->
+      <div class="modal-body">
+        <!-- Formulario Angular para capturar el dato a editar -->
+        <form #editForm="ngForm">
+          <div class="form-group">
+            <label for="campoEditar">Campo</label>
+            <!-- Campo de entrada con doble enlace de datos usando [(ngModel)] -->
+            <input
+              type="text"
+              class="form-control"
+              id="campoEditar"
+              [(ngModel)]="campoEditar"
+              name="campoEditar"
+              required
+            />
+          </div>
+        </form>
+      </div>
+      <!-- Pie del modal con botones -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+        <!-- Botón que invoca la función Angular para guardar cambios -->
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="guardarCambios()"
+        >
+          Aceptar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="table-container">
+  <div class="table-header">
+    <div class="column-header"><h2 class="column-header-title">Tipo Habitación</h2></div>
+    <div class="column-header">
+      <h2 class="column-header-title">Datos del Huésped</h2>
+      <div class="huesped">
+        <div><h2>Tipo Documento</h2></div>
+        <div><h2>Documento</h2></div>
+        <div><h2>Primer Nombre</h2></div>
+        <div><h2>Segundo Nombre</h2></div>
+        <div><h2>Primer Apellido</h2></div>
+        <div><h2>Segundo Apellido</h2></div>
+        <div><h2>Dirección</h2></div>
+        <div><h2>País</h2></div>
+        <div><h2>Ciudad</h2></div>
+        <div><h2>Teléfono</h2></div>
+        <div><h2>Correo electrónico</h2></div>
+        <div><h2>País Origen</h2></div>
+        <div><h2>Ciudad Origen</h2></div>
+      </div>
+    </div>
+    <div class="column-header">
+      <h2 class="column-header-title">Datos de Destino</h2>
+      <div class="destino">
+        <div><h2>País Destino</h2></div>
+        <div><h2>Ciudad Destino</h2></div>
+      </div>
+    </div>
+    <div class="column-header">
+      <h2 class="column-header-title">Huésped Principal</h2>
+    </div>
+  </div>
+
+  <div class="table-body">
+    <div
+      class="habitacion-container"
+      *ngFor="let habitacion of reserva?.habitaciones"
+    >
+      <div>
+        {{ habitacion.habitacion.nombre_tipo_habitacion }}
+      </div>
+      <div class="huesped-contenedor">
+        <div
+          *ngFor="let huesped of habitacion.huespedes; let i = index"
+          class="huesped-info"
+        >
+          <div class="huesped-info-personal">
+            <!-- Tipo de documento del huésped -->
+            <div class="">
+              <select
+                class="form-control"
+                [(ngModel)]="habitacion.huespedes[i].tipoDocumento"
+                (change)="cambiarSelect(i,'ciudad', habitacion.huespedes[i].ciudad)"
+              >
+                <option
+                  *ngFor="let tipo of tiposDocumentos"
+                  [value]="tipo.value"
+                >
+                  {{ tipo.label }}
+                </option>
+              </select>
+            </div>
+            <!-- Documento del huésped -->
+            <div class="">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="habitacion.huespedes[i].documento"
+                (click)="
+                  abrirModal(i, 'documento', habitacion.huespedes[i].documento)
+                "
+              />
+            </div>
+            <!-- Primer Nombre del huésped -->
+            <div class="">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="habitacion.huespedes[i].primerNombre"
+                (click)="
+                  abrirModal(
+                    i,
+                    'primerNombre',
+                    habitacion.huespedes[i].primerNombre
+                  )
+                "
+              />
+            </div>
+            <!-- Segundo Nombre del huésped -->
+            <div class="">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="habitacion.huespedes[i].segundoNombre"
+                (click)="
+                  abrirModal(
+                    i,
+                    'segundoNombre',
+                    habitacion.huespedes[i].segundoNombre
+                  )
+                "
+              />
+            </div>
+            <!-- Primer Apellido del huésped -->
+            <div class="">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="habitacion.huespedes[i].primerApellido"
+                (click)="
+                  abrirModal(
+                    i,
+                    'primerApellido',
+                    habitacion.huespedes[i].primerApellido
+                  )
+                "
+              />
+            </div>
+            <!-- Segundo Apellido del huésped -->
+            <div class="">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="habitacion.huespedes[i].segundoApellido"
+                (click)="
+                  abrirModal(
+                    i,
+                    'segundoApellido',
+                    habitacion.huespedes[i].segundoApellido
+                  )
+                "
+              />
+            </div>
+            <!-- Dirección del huésped -->
+            <div class="">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="habitacion.huespedes[i].direccion"
+                (click)="
+                  abrirModal(i, 'direccion', habitacion.huespedes[i].direccion)
+                "
+              />
+            </div>
+            <!-- País del huésped -->
+            <div class="">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="habitacion.huespedes[i].pais"
+                (click)="abrirModal(i, 'pais', habitacion.huespedes[i].pais)"
+                (change)="cambiarPais(i, 'pais', 'ciudad')"
+              />
+            </div>
+            <!--Ciudad-->
+            <div class="">
+              <!-- Si el país es Colombia, mostramos un select -->
+              <ng-container
+                *ngIf="
+                  habitacion.huespedes[i].pais === 'Colombia';
+                  else inputCiudad
+                "
+              >
+                <select
+                  class="form-control"
+                  [(ngModel)]="habitacion.huespedes[i].ciudad"
+                  [disabled]="!habitacion.huespedes[i].pais"
+                  (change)="cambiarSelect(i,'ciudad', habitacion.huespedes[i].ciudad)"
+                >
+                  <option
+                    *ngFor="let ciudad of ciudadesColombia"
+                    [value]="ciudad"
+                  >
+                    {{ ciudad }}
+                  </option>
+                </select>
+              </ng-container>
+              <!-- Si el país NO es Colombia, mostramos un input -->
+              <ng-template #inputCiudad>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="habitacion.huespedes[i].ciudad"
+                  [disabled]="!habitacion.huespedes[i].pais"
+                  (click)="abrirModal(i, 'ciudad', habitacion.huespedes[i].ciudad)"
+                  
+                />
+              </ng-template>
+            </div>
+
+            <!-- Teléfono del huésped -->
+            <div class="">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="habitacion.huespedes[i].telefono"
+                (click)="
+                  abrirModal(i, 'telefono', habitacion.huespedes[i].telefono)
+                "
+              />
+            </div>
+            <!-- Correo electrónico del huésped -->
+            <div class="">
+              <input
+                type="email"
+                class="form-control"
+                [(ngModel)]="habitacion.huespedes[i].email"
+                (click)="abrirModal(i, 'email', habitacion.huespedes[i].email)"
+              />
+            </div>
+            <!-- País Origen del huésped -->
+            <div class="">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="habitacion.huespedes[i].paisOrigen"
+                (click)="
+                  abrirModal(
+                    i,
+                    'paisOrigen',
+                    habitacion.huespedes[i].paisOrigen
+                  )
+                "
+                (change)="
+                  cambiarPaisOrigen(
+                    habitacion.huespedes[i].id,
+                    'paisOrigen',
+                    'ciudadOrigen'
+                  )
+                "
+              />
+            </div>
+            <!-- Ciudad Origen del huésped -->
+            <div class="">
+              <!-- Si el país origen es Colombia, mostramos un select con las ciudades -->
+              <ng-container
+                *ngIf="
+                  habitacion.huespedes[i].paisOrigen === 'Colombia';
+                  else inputCiudadOrigen
+                "
+              >
+                <select
+                  class="form-control"
+                  [(ngModel)]="habitacion.huespedes[i].ciudadOrigen"
+                  [disabled]="!habitacion.huespedes[i].paisOrigen"
+                  (change)="cambiarSelect(i,'ciudad', habitacion.huespedes[i].ciudad)"
+                >
+                  <option
+                    *ngFor="let ciudad of ciudadesColombia"
+                    [value]="ciudad"
+                  >
+                    {{ ciudad }}
+                  </option>
+                </select>
+              </ng-container>
+              <!-- Si el país origen no es Colombia, mostramos un input de texto -->
+              <ng-template #inputCiudadOrigen>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="habitacion.huespedes[i].ciudadOrigen"
+                  [disabled]="!habitacion.huespedes[i].paisOrigen"
+                  (click)="
+                    abrirModal(
+                      i,
+                      'ciudadOrigen',
+                      habitacion.huespedes[i].ciudadOrigen
+                    )
+                  "
+                  
+                />
+              </ng-template>
+            </div>
+          </div>
+
+          <div class="huesped-info-destino">
+            <!-- País Destino del huésped -->
+            <div class="">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="habitacion.huespedes[i].paisDestino"
+                (click)="
+                  abrirModal(
+                    i,
+                    'paisDestino',
+                    habitacion.huespedes[i].paisDestino
+                  )
+                "
+                (change)="
+                  cambiarPaisDestino(
+                    habitacion.huespedes[i].id,
+                    'paisDestino',
+                    'ciudadDestino'
+                  )
+                "
+              />
+            </div>
+            <!-- Ciudad Destino del huésped -->
+            <div class="">
+              <!-- Si el país destino es Colombia, mostramos un select con las ciudades -->
+              <ng-container
+                *ngIf="
+                  habitacion.huespedes[i].paisDestino === 'Colombia';
+                  else inputCiudadDestino
+                "
+              >
+                <select
+                  class="form-control"
+                  [(ngModel)]="habitacion.huespedes[i].ciudadDestino"
+                  [disabled]="!habitacion.huespedes[i].paisDestino"
+                  (change)="cambiarSelect(i,'ciudad', habitacion.huespedes[i].ciudad)"
+                >
+                  <option
+                    *ngFor="let ciudad of ciudadesColombia"
+                    [value]="ciudad"
+                  >
+                    {{ ciudad }}
+                  </option>
+                </select>
+              </ng-container>
+              <!-- Si el país destino no es Colombia, mostramos un input de texto -->
+              <ng-template #inputCiudadDestino>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="habitacion.huespedes[i].ciudadDestino"
+                  [disabled]="!habitacion.huespedes[i].paisDestino"
+                  (click)="
+                    abrirModal(
+                      i,
+                      'ciudadDestino',
+                      habitacion.huespedes[i].ciudadDestino
+                    ); 
+                  "
+                  (change)="sincronizarCampos( 'ciudadDestino', habitacion.huespedes[i].ciudadDestino)"
+                />
+              </ng-template>
+            </div>
+          </div>
+
+          <!-- Huésped Principal -->
+          <div>
+            <input
+              type="checkbox"
+              class="check-huesped-principal"
+              [(ngModel)]="habitacion.huespedes[i].huespedPrincipal"
+              [disabled]="true"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-primary" (click)="guardarCambios()">Guardar Cambios</button>
+
+
