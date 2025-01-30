@@ -1,3 +1,4 @@
+/* Estilos generales */
 .table-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -106,4 +107,99 @@ h2 {
 .check-huesped-principal {
   width: 1.3em;
   height: 1.3em;
+}
+
+
+
+.table-container-vertical {
+  display: none;
+}
+
+/* Estilos para móviles */
+@media screen and (max-width: 768px) {
+  /* Ocultar la tabla horizontal en pantallas pequeñas */
+  .table-container {
+    display: none; 
+  }
+
+
+  .table-container-vertical {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 1em;
+  }
+
+  .table-container-vertical .row {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #120312;
+    margin-bottom: 1em;
+    padding: 1em;
+  }
+
+  .table-container-vertical .row div {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em;
+    border-bottom: 1px solid #292929;
+  }
+
+  .table-container-vertical .row div:last-child {
+    border-bottom: none;
+  }
+
+/* Contenedores de cada sección */
+.habitacion-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 15px;
+  padding: 10px;
+}
+.huesped-group {
+  display: table;
+  border: 2px solid black; /* Borde combinado */
+  width: 100%;
+  max-width: 600px;
+  padding: 10px;
+}
+
+.huesped-container,
+.datos-destino,
+.huesped-principal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  border: none; /* Eliminamos los bordes individuales */
+}
+/* Estilos para las filas de datos */
+.fila {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+/* Etiquetas alineadas */
+.fila label {
+  flex: 1;
+  text-align: left;
+  font-weight: bold;
+}
+
+/* Inputs y selects alineados */
+.fila input, 
+.fila select {
+  flex: 2;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
 }

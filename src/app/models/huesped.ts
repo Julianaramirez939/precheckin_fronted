@@ -34,6 +34,7 @@ export interface Huesped {
   id_externo: string, 
   id_siat: number, 
   estado: string, 
+  tempId: number
 }
 
 

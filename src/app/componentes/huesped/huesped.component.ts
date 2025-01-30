@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router'; // Inyectamos Router y ActivatedRoute
+import { ActivatedRoute } from '@angular/router'; // Inyectamos Router y ActivatedRoute
 import { ApiService } from '../../api.service';
 import { ApiRestService } from '../../api-rest.service';
 import { Huesped } from '../../models/huesped';
@@ -7,7 +7,7 @@ import * as bootstrap from 'bootstrap';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-huesped',
   standalone: true,
@@ -24,7 +24,7 @@ export class HuespedComponent implements OnInit {
     { value: 'Licencia', label: 'Licencia' },
     { value: 'Cédula', label: 'Cédula' },
   ];
-  indexHuespedCambio: number = 0;
+  indexHuespedCambio: any = null;
   campoEditar: string = '';
   campoOriginal: any;
   campoNombre: string = '';
@@ -43,7 +43,6 @@ export class HuespedComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private apiRestService: ApiRestService,
-    private router: Router,
     private activatedRoute: ActivatedRoute // Inyectamos ActivatedRoute para acceder a los parámetros de la URL
   ) {}
 
@@ -57,29 +56,30 @@ export class HuespedComponent implements OnInit {
       this.idPreCheckin = Number(idReservaFromUrl);
       this.obtenerReserva(Number(idReservaFromUrl));
     }
-    // Si no hay ID en la URL, seguimos con el flujo normal
-    const idReserva = 2306; // Valor de ejemplo para la reserva
-    const token = '9114208100015241';
-    const idusuariosesion = 'COMANDO';
-
-    this.apiService
-      .consultarReserva(idReserva, token, idusuariosesion)
-      .subscribe({
-        next: (data: any) => {
-          this.reserva = data.reserva;
-          this.procesarReserva();
-        },
-        error: (err) => {
-          console.error('Error al obtener la reserva:', err);
-        },
-      });
   }
 
   // Método para obtener la reserva por ID
   obtenerReserva(id_reserva: number): void {
     this.apiRestService.obtenerReserva(id_reserva).subscribe({
       next: (data: any) => {
+        console.log('data de obtener reserva(precheckins)', data);
         this.Precheckins = data;
+
+        // Si no hay ID en la URL, seguimos con el flujo normal
+        const token = '9114208100015241';
+        const idusuariosesion = 'COMANDO';
+
+        this.apiService
+          .consultarReserva(id_reserva, token, idusuariosesion)
+          .subscribe({
+            next: (data: any) => {
+              this.reserva = data.reserva;
+              this.procesarReserva();
+            },
+            error: (err) => {
+              console.error('Error al obtener la reserva:', err);
+            },
+          });
       },
       error: (err) => {
         console.error('Error al obtener la reserva:', err);
@@ -89,17 +89,22 @@ export class HuespedComponent implements OnInit {
 
   procesarReserva(): void {
     if (this.reserva?.habitaciones?.length > 0) {
+      let tempId = 0;
       this.reserva.habitaciones.forEach((habitacion: any) => {
         const cantidadHuespedes =
           habitacion.cantidad_adulto + habitacion.cantidad_infante;
         habitacion.huespedes = habitacion.huespedes || [];
 
-        if (this.idPreCheckin > 0) {
+        if (this.Precheckins.length > 0) {
+          console.log('Ya hay prechekins creados');
           habitacion.huespedes = this.Precheckins.filter(
             (precheckin) => precheckin.id_reserva_habitacion == habitacion.id
           );
         } else {
+          console.log('Se van a crear precheckins vacios');
+
           for (let i = 0; i < cantidadHuespedes; i++) {
+            console.log('tempId en creacion de precheckin vacio', tempId);
             const huespedObj: Huesped = {
               tipoDocumento: '',
               documento: '',
@@ -136,9 +141,12 @@ export class HuespedComponent implements OnInit {
               id_siat: 0,
               estado: 'reservado',
               id: 0,
+              tempId: tempId,
             };
             habitacion.huespedes.push(huespedObj);
+            tempId++;
           }
+          this.guardarCambios();
         }
         this.primerHuesped = this.reserva?.habitaciones[0]?.huespedes[0];
       });
@@ -155,7 +163,6 @@ export class HuespedComponent implements OnInit {
 
   sincronizarCampos(campo: string, valor: any): void {
     const camposASincronizar = [
-      'tipoDocumento',
       'direccion',
       'pais',
       'ciudad',
@@ -232,17 +239,18 @@ export class HuespedComponent implements OnInit {
   }
 
   guardarCambios() {
+    console.log('reserva antes de procesar huespedes', this.reserva);
     let huesped: any = null;
     let huespedesAux: any[] = [];
 
+    huespedesAux = this.reserva.habitaciones.flatMap(
+      (habitacion: any) => habitacion.huespedes
+    );
+
     if (this.indexHuespedCambio !== null) {
-      huespedesAux = this.reserva.habitaciones.flatMap(
-        (habitacion: any) => habitacion.huespedes
-      );
       huesped = huespedesAux[this.indexHuespedCambio];
     } else {
       console.error('No se ha encontrado el índice de huésped.');
-      return;
     }
 
     if (huesped) {
@@ -252,33 +260,48 @@ export class HuespedComponent implements OnInit {
         this.sincronizarCampos(this.campoNombre, this.campoEditar);
       }
 
-      console.log('huesped', huesped);
-      console.log('huespedesAux', huespedesAux);
-
-      this.apiRestService.guardarReserva(huespedesAux).subscribe({
-        next: (response) => {
-          console.log('Response de guardarReserva', response);
-          /*if (!huesped.id || huesped.id === 0) {
-                    huesped.id = response.id;
-                }*/
-        },
-        error: (err) => {
-          console.error('Error al guardar el huésped', err);
-        },
-      });
-
       const modalElement = document.getElementById('editModal');
       if (modalElement) {
         const modal = bootstrap.Modal.getInstance(modalElement);
         modal?.hide();
       }
     }
+
+    this.apiRestService.guardarReserva(huespedesAux).subscribe({
+      next: (response) => {
+        console.log('Response de guardarReserva', response);
+        response.forEach((huespedActualizado: any) => {
+          let index = -1;
+          if (
+            huespedActualizado.hasOwnProperty('tempId') &&
+            huespedActualizado.tempId != null
+          ) {
+            index = huespedesAux.findIndex(
+              (h) => h.tempId == huespedActualizado.tempId
+            );
+          } else {
+            index = huespedesAux.findIndex(
+              (h) => h.id == huespedActualizado.id
+            );
+          }
+
+          if (index > -1) {
+            huespedesAux[index].id = huespedActualizado.id;
+          }
+        });
+        console.log('reserva luego de guardar', this.reserva);
+      },
+      error: (err) => {
+        console.error('Error al guardar el huésped', err);
+      },
+    });
   }
   cambiarSelect(index: number, campo: string, valor: any) {
-    this.campoNombre = campo; // Asigna el nombre del campo a editar
-    this.campoOriginal = valor; // Guarda el valor original del campo
-    this.campoEditar = valor; // Inicializa el valor editable
+    this.campoNombre = campo;
+    this.campoOriginal = valor;
+    this.campoEditar = valor;
     this.indexHuespedCambio = index;
 
     this.guardarCambios();
-}}
+  }
+}
