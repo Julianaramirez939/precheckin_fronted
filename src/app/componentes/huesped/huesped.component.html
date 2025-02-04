@@ -55,38 +55,46 @@
   </div>
 </div>
 
+<div class="centered-text">
+<!--<img src="assets/logo-soleden-comfenalco.webp" width="200" height="125">--->
+<!--<img src="assets/LOGO-LAS-BAILARINAS.webp" width="200" height="125">--->
+<!--<img src="assets/larivera-logo.webp" width="200" height="125">--->
+<!--<img src="assets/palmaverde-logo.webp" width="100" height="200">--->
+  <h1 class="texto-negrita-azul">Pre-checkin</h1>
+</div>
+
 <div class="table-container">
   <div class="table-header">
     <div class="column-header">
-      <h2 class="column-header-title">Tipo Habitación</h2>
+      <h2 class="column-header-title texto-negrita-azul">Tipo Habitación</h2>
     </div>
     <div class="column-header">
-      <h2 class="column-header-title">Datos del Huésped</h2>
+      <h2 class="column-header-title texto-negrita-azul">Datos del Huésped</h2>
       <div class="huesped">
-        <div><h2>Tipo Documento</h2></div>
-        <div><h2>Documento</h2></div>
-        <div><h2>Primer Nombre</h2></div>
-        <div><h2>Segundo Nombre</h2></div>
-        <div><h2>Primer Apellido</h2></div>
-        <div><h2>Segundo Apellido</h2></div>
-        <div><h2>Dirección</h2></div>
-        <div><h2>País</h2></div>
-        <div><h2>Ciudad</h2></div>
-        <div><h2>Teléfono</h2></div>
-        <div><h2>Correo electrónico</h2></div>
-        <div><h2>País Origen</h2></div>
-        <div><h2>Ciudad Origen</h2></div>
+        <div><h2 class="texto-negrita-azul">Tipo Documento</h2></div>
+        <div><h2 class="texto-negrita-azul">Documento</h2></div>
+        <div><h2 class="texto-negrita-azul">Primer Nombre</h2></div>
+        <div><h2 class="texto-negrita-azul">Segundo Nombre</h2></div>
+        <div><h2 class="texto-negrita-azul">Primer Apellido</h2></div>
+        <div><h2 class="texto-negrita-azul">Segundo Apellido</h2></div>
+        <div><h2 class="texto-negrita-azul">Dirección</h2></div>
+        <div><h2 class="texto-negrita-azul">País</h2></div>
+        <div><h2 class="texto-negrita-azul">Ciudad</h2></div>
+        <div><h2 class="texto-negrita-azul">Teléfono</h2></div>
+        <div><h2 class="texto-negrita-azul">Correo electrónico</h2></div>
+        <div><h2 class="texto-negrita-azul">País Origen</h2></div>
+        <div><h2 class="texto-negrita-azul">Ciudad Origen</h2></div>
       </div>
     </div>
     <div class="column-header">
-      <h2 class="column-header-title">Datos de Destino</h2>
+      <h2 class="column-header-title texto-negrita-azul">Datos de Destino</h2>
       <div class="destino">
-        <div><h2>País Destino</h2></div>
-        <div><h2>Ciudad Destino</h2></div>
+        <div><h2 class="texto-negrita-azul">País Destino</h2></div>
+        <div><h2 class="texto-negrita-azul">Ciudad Destino</h2></div>
       </div>
     </div>
     <div class="column-header">
-      <h2 class="column-header-title">Huésped Principal</h2>
+      <h2 class="column-header-title texto-negrita-azul">Huésped Principal</h2>
     </div>
   </div>
 
@@ -109,6 +117,8 @@
               <select
                 class="form-control"
                 [(ngModel)]="habitacion.huespedes[i].tipoDocumento"
+                #tipoDocumento="ngModel"
+                required
                 (change)="
                   cambiarSelect(i, 'ciudad', habitacion.huespedes[i].ciudad)
                 "
@@ -120,6 +130,12 @@
                   {{ tipo.label }}
                 </option>
               </select>
+              <div
+                *ngIf="tipoDocumento.invalid && tipoDocumento.touched"
+                class="text-danger"
+              >
+                El campo Tipo Documento es obligatorio.
+              </div>
             </div>
             <!-- Documento del huésped -->
             <div class="">
@@ -127,10 +143,25 @@
                 type="text"
                 class="form-control"
                 [(ngModel)]="habitacion.huespedes[i].documento"
+                #documento="ngModel"
+                required
+                pattern="^[0-9]+$"
                 (click)="
                   abrirModal(i, 'documento', habitacion.huespedes[i].documento)
                 "
               />
+              <div
+                *ngIf="documento.invalid && documento.touched"
+                class="text-danger"
+              >
+                El campo Documento es obligatorio.
+              </div>
+              <div
+                *ngIf="documento.errors?.['pattern'] && documento.touched"
+                class="text-danger"
+              >
+                El campo Documento debe contener solo números.
+              </div>
             </div>
             <!-- Primer Nombre del huésped -->
             <div class="">
@@ -138,6 +169,8 @@
                 type="text"
                 class="form-control"
                 [(ngModel)]="habitacion.huespedes[i].primerNombre"
+                #primerNombre="ngModel"
+                required
                 (click)="
                   abrirModal(
                     i,
@@ -146,6 +179,12 @@
                   )
                 "
               />
+              <div
+                *ngIf="primerNombre.invalid && primerNombre.touched"
+                class="text-danger"
+              >
+                El campo Primer Nombre es obligatorio.
+              </div>
             </div>
             <!-- Segundo Nombre del huésped -->
             <div class="">
@@ -153,6 +192,8 @@
                 type="text"
                 class="form-control"
                 [(ngModel)]="habitacion.huespedes[i].segundoNombre"
+                #segundoNombre="ngModel"
+                required
                 (click)="
                   abrirModal(
                     i,
@@ -161,6 +202,12 @@
                   )
                 "
               />
+              <div
+                *ngIf="segundoNombre.invalid && segundoNombre.touched"
+                class="text-danger"
+              >
+                El campo Segundo Nombre es obligatorio.
+              </div>
             </div>
             <!-- Primer Apellido del huésped -->
             <div class="">
@@ -168,6 +215,8 @@
                 type="text"
                 class="form-control"
                 [(ngModel)]="habitacion.huespedes[i].primerApellido"
+                #primerApellido="ngModel"
+                required
                 (click)="
                   abrirModal(
                     i,
@@ -176,6 +225,12 @@
                   )
                 "
               />
+              <div
+                *ngIf="primerApellido.invalid && primerApellido.touched"
+                class="text-danger"
+              >
+                El campo Primer Apellido es obligatorio.
+              </div>
             </div>
             <!-- Segundo Apellido del huésped -->
             <div class="">
@@ -183,6 +238,8 @@
                 type="text"
                 class="form-control"
                 [(ngModel)]="habitacion.huespedes[i].segundoApellido"
+                #segundoApellido="ngModel"
+                required
                 (click)="
                   abrirModal(
                     i,
@@ -191,6 +248,12 @@
                   )
                 "
               />
+              <div
+                *ngIf="segundoApellido.invalid && segundoApellido.touched"
+                class="text-danger"
+              >
+                El campo Segundo Apellido es obligatorio.
+              </div>
             </div>
             <!-- Dirección del huésped -->
             <div class="">
@@ -198,10 +261,18 @@
                 type="text"
                 class="form-control"
                 [(ngModel)]="habitacion.huespedes[i].direccion"
+                #direccion="ngModel"
+                required
                 (click)="
                   abrirModal(i, 'direccion', habitacion.huespedes[i].direccion)
                 "
               />
+              <div
+                *ngIf="direccion.invalid && direccion.touched"
+                class="text-danger"
+              >
+                El campo Dirección es obligatorio.
+              </div>
             </div>
             <!-- País del huésped -->
             <div class="">
@@ -209,9 +280,14 @@
                 type="text"
                 class="form-control"
                 [(ngModel)]="habitacion.huespedes[i].pais"
+                #pais="ngModel"
+                required
                 (click)="abrirModal(i, 'pais', habitacion.huespedes[i].pais)"
                 (change)="cambiarPais(i, 'pais', 'ciudad')"
               />
+              <div *ngIf="pais.invalid && pais.touched" class="text-danger">
+                El campo País es obligatorio.
+              </div>
             </div>
             <!--Ciudad-->
             <div class="">
@@ -225,6 +301,8 @@
                 <select
                   class="form-control"
                   [(ngModel)]="habitacion.huespedes[i].ciudad"
+                  #ciudad="ngModel"
+                  required
                   [disabled]="!habitacion.huespedes[i].pais"
                   (change)="
                     cambiarSelect(i, 'ciudad', habitacion.huespedes[i].ciudad)
@@ -237,6 +315,12 @@
                     {{ ciudad }}
                   </option>
                 </select>
+                <div
+                  *ngIf="ciudad.invalid && ciudad.touched"
+                  class="text-danger"
+                >
+                  El campo Ciudad es obligatorio.
+                </div>
               </ng-container>
               <!-- Si el país NO es Colombia, mostramos un input -->
               <ng-template #inputCiudad>
@@ -244,11 +328,19 @@
                   type="text"
                   class="form-control"
                   [(ngModel)]="habitacion.huespedes[i].ciudad"
+                  #ciudadInput="ngModel"
+                  required
                   [disabled]="!habitacion.huespedes[i].pais"
                   (click)="
                     abrirModal(i, 'ciudad', habitacion.huespedes[i].ciudad)
                   "
                 />
+                <div
+                  *ngIf="ciudadInput.invalid && ciudadInput.touched"
+                  class="text-danger"
+                >
+                  El campo Ciudad es obligatorio.
+                </div>
               </ng-template>
             </div>
 
@@ -258,26 +350,65 @@
                 type="text"
                 class="form-control"
                 [(ngModel)]="habitacion.huespedes[i].telefono"
+                #telefono="ngModel"
+                required
+                pattern="^[0-9]+$"
                 (click)="
                   abrirModal(i, 'telefono', habitacion.huespedes[i].telefono)
                 "
               />
+
+              <!-- Mensaje de validación: Obligatorio -->
+              <div
+                *ngIf="telefono.invalid && telefono.touched"
+                class="text-danger"
+              >
+                El campo Teléfono es obligatorio.
+              </div>
+
+              <!-- Mensaje de validación: Solo números -->
+              <div
+                *ngIf="telefono.errors?.['pattern'] && telefono.touched"
+                class="text-danger"
+              >
+                El campo Teléfono debe contener solo números.
+              </div>
             </div>
+
             <!-- Correo electrónico del huésped -->
             <div class="">
               <input
                 type="email"
                 class="form-control"
                 [(ngModel)]="habitacion.huespedes[i].email"
+                #email="ngModel"
+                required
+                email
                 (click)="abrirModal(i, 'email', habitacion.huespedes[i].email)"
               />
+
+              <!-- Mensaje de validación: Obligatorio -->
+              <div *ngIf="email.invalid && email.touched" class="text-danger">
+                El campo Correo electrónico es obligatorio.
+              </div>
+
+              <!-- Mensaje de validación: Formato de correo -->
+              <div
+                *ngIf="email.errors?.['email'] && email.touched"
+                class="text-danger"
+              >
+                El formato del Correo electrónico no es válido.
+              </div>
             </div>
+
             <!-- País Origen del huésped -->
             <div class="">
               <input
                 type="text"
                 class="form-control"
                 [(ngModel)]="habitacion.huespedes[i].paisOrigen"
+                #paisOrigen="ngModel"
+                required
                 (click)="
                   abrirModal(
                     i,
@@ -293,6 +424,12 @@
                   )
                 "
               />
+              <div
+                *ngIf="paisOrigen.invalid && paisOrigen.touched"
+                class="text-danger"
+              >
+                El campo País Origen es obligatorio.
+              </div>
             </div>
             <!-- Ciudad Origen del huésped -->
             <div class="">
@@ -306,6 +443,8 @@
                 <select
                   class="form-control"
                   [(ngModel)]="habitacion.huespedes[i].ciudadOrigen"
+                  #ciudadOrigenInput="ngModel"
+                  required
                   [disabled]="!habitacion.huespedes[i].paisOrigen"
                   (change)="
                     cambiarSelect(i, 'ciudad', habitacion.huespedes[i].ciudad)
@@ -318,6 +457,12 @@
                     {{ ciudad }}
                   </option>
                 </select>
+                <div
+                  *ngIf="ciudadOrigenInput.invalid && ciudadOrigenInput.touched"
+                  class="text-danger"
+                >
+                  El campo Ciudad Origen es obligatorio.
+                </div>
               </ng-container>
               <!-- Si el país origen no es Colombia, mostramos un input de texto -->
               <ng-template #inputCiudadOrigen>
@@ -325,6 +470,8 @@
                   type="text"
                   class="form-control"
                   [(ngModel)]="habitacion.huespedes[i].ciudadOrigen"
+                  #ciudadOrigen="ngModel"
+                  required
                   [disabled]="!habitacion.huespedes[i].paisOrigen"
                   (click)="
                     abrirModal(
@@ -334,6 +481,12 @@
                     )
                   "
                 />
+                <div
+                  *ngIf="ciudadOrigen.invalid && ciudadOrigen.touched"
+                  class="text-danger"
+                >
+                  El campo Ciudad Origen es obligatorio.
+                </div>
               </ng-template>
             </div>
           </div>
@@ -345,6 +498,8 @@
                 type="text"
                 class="form-control"
                 [(ngModel)]="habitacion.huespedes[i].paisDestino"
+                #paisDestino="ngModel"
+                required
                 (click)="
                   abrirModal(
                     i,
@@ -360,6 +515,12 @@
                   )
                 "
               />
+              <div
+                *ngIf="paisDestino.invalid && paisDestino.touched"
+                class="text-danger"
+              >
+                El campo País Destino es obligatorio.
+              </div>
             </div>
             <!-- Ciudad Destino del huésped -->
             <div class="">
@@ -373,6 +534,7 @@
                 <select
                   class="form-control"
                   [(ngModel)]="habitacion.huespedes[i].ciudadDestino"
+                  #ciudadDestinoInput="ngModel"
                   [disabled]="!habitacion.huespedes[i].paisDestino"
                   (change)="
                     cambiarSelect(i, 'ciudad', habitacion.huespedes[i].ciudad)
@@ -385,6 +547,14 @@
                     {{ ciudad }}
                   </option>
                 </select>
+                <div
+                  *ngIf="
+                    ciudadDestinoInput.invalid && ciudadDestinoInput.touched
+                  "
+                  class="text-danger"
+                >
+                  El campo Ciudad Destino es obligatorio.
+                </div>
               </ng-container>
               <!-- Si el país destino no es Colombia, mostramos un input de texto -->
               <ng-template #inputCiudadDestino>
@@ -392,6 +562,8 @@
                   type="text"
                   class="form-control"
                   [(ngModel)]="habitacion.huespedes[i].ciudadDestino"
+                  #ciudadDestino="ngModel"
+                  required
                   [disabled]="!habitacion.huespedes[i].paisDestino"
                   (click)="
                     abrirModal(
@@ -407,18 +579,19 @@
                     )
                   "
                 />
+                <div
+                  *ngIf="ciudadDestino.invalid && ciudadDestino.touched"
+                  class="text-danger"
+                >
+                  El campo Ciudad Destino electrónico es obligatorio.
+                </div>
               </ng-template>
             </div>
           </div>
 
           <!-- Huésped Principal -->
-          <div>
-            <input
-              type="checkbox"
-              class="check-huesped-principal"
-              [(ngModel)]="habitacion.huespedes[i].huespedPrincipal"
-              [disabled]="true"
-            />
+          <div *ngIf="verificarHuespedPrincipal(habitacion.huespedes[i])">
+            <i class="fa-solid fa-circle-check" style="color: #0ba001; font-size: 2rem;"></i>
           </div>
         </div>
       </div>
@@ -427,357 +600,485 @@
 </div>
 
 <div class="table-container-vertical">
-  <div class="habitacion-container" *ngFor="let habitacion of reserva?.habitaciones">
+  <div
+    class="habitacion-container"
+    *ngFor="let habitacion of reserva?.habitaciones"
+  >
     <h3>Tipo Habitación</h3>
     <div>
       {{ habitacion.habitacion.nombre_tipo_habitacion }}
     </div>
     <div class="">
-      
       <div *ngFor="let huesped of habitacion.huespedes; let i = index" class="">
         <div class="huesped-group">
-        <div class="huesped-container">
-          <h3>Datos del Huésped</h3>
-          <!-- Tipo de documento del huésped -->
-          <div class="fila">
-           <label>Tipo documento:</label>
+          <div class="huesped-container">
+            <h3>Datos del Huésped {{i+1}}</h3>
+            <!-- Tipo de documento del huésped -->
+            <div class="fila">
+              <label class="texto-negrita-azul">Tipo documento:</label>
 
-            <select
-              class="fila"
-              [(ngModel)]="habitacion.huespedes[i].tipoDocumento"
-              (change)="
-                cambiarSelect(i, 'ciudad', habitacion.huespedes[i].ciudad)
-              "
-            >
-              <option *ngFor="let tipo of tiposDocumentos" [value]="tipo.value">
-                {{ tipo.label }}
-              </option>
-            </select>
-          </div>
-          <!-- Documento del huésped -->
-          <div class="fila">
-            <label>Documento:</label>
-            <input
-              type="text"
-              class="fila"
-              [(ngModel)]="habitacion.huespedes[i].documento"
-              (click)="
-                abrirModal(i, 'documento', habitacion.huespedes[i].documento)
-              "
-            />
-          </div>
-          <!-- Primer Nombre del huésped -->
-          <div class="fila">
-            <label>Primer Nombre:</label>
-            <input
-              type="text"
-              class="fila"
-              [(ngModel)]="habitacion.huespedes[i].primerNombre"
-              (click)="
-                abrirModal(
-                  i,
-                  'primerNombre',
-                  habitacion.huespedes[i].primerNombre
-                )
-              "
-            />
-          </div>
-          <!-- Segundo Nombre del huésped -->
-          <div class="fila">
-            <label>Segundo Nombre:</label>
-            <input
-              type="text"
-              class="fila"
-              [(ngModel)]="habitacion.huespedes[i].segundoNombre"
-              (click)="
-                abrirModal(
-                  i,
-                  'segundoNombre',
-                  habitacion.huespedes[i].segundoNombre
-                )
-              "
-            />
-          </div>
-          <!-- Primer Apellido del huésped -->
-          <div class="fila">
-            <label>Primer apellido:</label>
-            <input
-              type="text"
-              class="fila"
-              [(ngModel)]="habitacion.huespedes[i].primerApellido"
-              (click)="
-                abrirModal(
-                  i,
-                  'primerApellido',
-                  habitacion.huespedes[i].primerApellido
-                )
-              "
-            />
-          </div>
-          <!-- Segundo Apellido del huésped -->
-          <div class="fila">
-            <label>Segundo Apellido:</label>
-            <input
-              type="text"
-              class="fila"
-              [(ngModel)]="habitacion.huespedes[i].segundoApellido"
-              (click)="
-                abrirModal(
-                  i,
-                  'segundoApellido',
-                  habitacion.huespedes[i].segundoApellido
-                )
-              "
-            />
-          </div>
-          <!-- Dirección del huésped -->
-          <div class="fila">
-            <label>Dirección:</label>
-            <input
-              type="text"
-              class="fila"
-              [(ngModel)]="habitacion.huespedes[i].direccion"
-              (click)="
-                abrirModal(i, 'direccion', habitacion.huespedes[i].direccion)
-              "
-            />
-          </div>
-          <!-- País del huésped -->
-          <div class="fila">
-            <label>País:</label>
-            <input
-              type="text"
-              class="fila"
-              [(ngModel)]="habitacion.huespedes[i].pais"
-              (click)="abrirModal(i, 'pais', habitacion.huespedes[i].pais)"
-              (change)="cambiarPais(i, 'pais', 'ciudad')"
-            />
-          </div>
-          <!--Ciudad-->
-          <div class="fila">
-            <label>Ciudad:</label>
-            <!-- Si el país es Colombia, mostramos un select -->
-            <ng-container
-              *ngIf="
-                habitacion.huespedes[i].pais === 'Colombia';
-                else inputCiudad
-              "
-            >
               <select
-                class="fila"
-                [(ngModel)]="habitacion.huespedes[i].ciudad"
-                [disabled]="!habitacion.huespedes[i].pais"
+                class=""
+                [(ngModel)]="habitacion.huespedes[i].tipoDocumento"
+                #tipoDocumento2="ngModel"
+                required
                 (change)="
                   cambiarSelect(i, 'ciudad', habitacion.huespedes[i].ciudad)
                 "
               >
                 <option
-                  *ngFor="let ciudad of ciudadesColombia"
-                  [value]="ciudad"
+                  *ngFor="let tipo of tiposDocumentos"
+                  [value]="tipo.value"
                 >
-                  {{ ciudad }}
+                  {{ tipo.label }}
                 </option>
               </select>
-            </ng-container>
-            <!-- Si el país NO es Colombia, mostramos un input -->
-            <ng-template #inputCiudad>
+              <div
+                *ngIf="tipoDocumento2.invalid && tipoDocumento2.touched"
+                class="text-danger"
+              >
+                El campo Tipo Documento es obligatorio.
+              </div>
+            </div>
+            <!-- Documento del huésped -->
+            <div class="fila">
+              <label class="texto-negrita-azul">Documento:</label>
               <input
                 type="text"
                 class="fila"
-                [(ngModel)]="habitacion.huespedes[i].ciudad"
-                [disabled]="!habitacion.huespedes[i].pais"
+                [(ngModel)]="habitacion.huespedes[i].documento"
+                #documento2="ngModel"
+                required
+                pattern="^[0-9]+$"
                 (click)="
-                  abrirModal(i, 'ciudad', habitacion.huespedes[i].ciudad)
+                  abrirModal(i, 'documento', habitacion.huespedes[i].documento)
                 "
               />
-            </ng-template>
-          </div>
-
-          <!-- Teléfono del huésped -->
-          <div class="fila">
-            <label>Teléfono:</label>
-            <input
-              type="text"
-              class="fila"
-              [(ngModel)]="habitacion.huespedes[i].telefono"
-              (click)="
-                abrirModal(i, 'telefono', habitacion.huespedes[i].telefono)
-              "
-            />
-          </div>
-          <!-- Correo electrónico del huésped -->
-          <div class="fila">
-            <label>Correo electrónico:</label>
-            <input
-              type="email"
-              class="fila"
-              [(ngModel)]="habitacion.huespedes[i].email"
-              (click)="abrirModal(i, 'email', habitacion.huespedes[i].email)"
-            />
-          </div>
-          <!-- País Origen del huésped -->
-          <div class="fila">
-            <label>País Origen:</label>
-            <input
-              type="text"
-              class="fila"
-              [(ngModel)]="habitacion.huespedes[i].paisOrigen"
-              (click)="
-                abrirModal(i, 'paisOrigen', habitacion.huespedes[i].paisOrigen)
-              "
-              (change)="
-                cambiarPaisOrigen(
-                  habitacion.huespedes[i].id,
-                  'paisOrigen',
-                  'ciudadOrigen'
-                )
-              "
-            />
-          </div>
-          <!-- Ciudad Origen del huésped -->
-          <div class="fila">
-            <label>Ciudad Origen:</label>
-            <!-- Si el país origen es Colombia, mostramos un select con las ciudades -->
-            <ng-container
-              *ngIf="
-                habitacion.huespedes[i].paisOrigen === 'Colombia';
-                else inputCiudadOrigen
-              "
-            >
-              <select
-                class="fila"
-                [(ngModel)]="habitacion.huespedes[i].ciudadOrigen"
-                [disabled]="!habitacion.huespedes[i].paisOrigen"
-                (change)="
-                  cambiarSelect(i, 'ciudad', habitacion.huespedes[i].ciudad)
-                "
+              <div
+                *ngIf="documento2.invalid && documento2.touched"
+                class="text-danger"
               >
-                <option
-                  *ngFor="let ciudad of ciudadesColombia"
-                  [value]="ciudad"
-                >
-                  {{ ciudad }}
-                </option>
-              </select>
-            </ng-container>
-            <!-- Si el país origen no es Colombia, mostramos un input de texto -->
-            <ng-template #inputCiudadOrigen>
+                El campo Tipo Documento es obligatorio.
+              </div>
+              <div
+                *ngIf="documento2.errors?.['pattern'] && documento2.touched"
+                class="text-danger"
+              >
+                El campo Documento debe contener solo números.
+              </div>
+            </div>
+            <!-- Primer Nombre del huésped -->
+            <div class="fila">
+              <label class="texto-negrita-azul">Primer Nombre:</label>
               <input
                 type="text"
                 class="fila"
-                [(ngModel)]="habitacion.huespedes[i].ciudadOrigen"
-                [disabled]="!habitacion.huespedes[i].paisOrigen"
+                [(ngModel)]="habitacion.huespedes[i].primerNombre"
+                #primerNombre2="ngModel"
+                required
                 (click)="
                   abrirModal(
                     i,
-                    'ciudadOrigen',
-                    habitacion.huespedes[i].ciudadOrigen
+                    'primerNombre',
+                    habitacion.huespedes[i].primerNombre
                   )
                 "
               />
-            </ng-template>
-          </div>
-        </div>
-
-        <div class="datos-destino">
-          <h3>Datos de Destino</h3>
-
-          <!-- País Destino del huésped -->
-          <div class="fila">
-            <label>País Destino:</label>
-            <input
-              type="text"
-              class="fila"
-              [(ngModel)]="habitacion.huespedes[i].paisDestino"
-              (click)="
-                abrirModal(
-                  i,
-                  'paisDestino',
-                  habitacion.huespedes[i].paisDestino
-                )
-              "
-              (change)="
-                cambiarPaisDestino(
-                  habitacion.huespedes[i].id,
-                  'paisDestino',
-                  'ciudadDestino'
-                )
-              "
-            />
-          </div>
-          <!-- Ciudad Destino del huésped -->
-          <div class="fila">
-            <label>Ciudad Destino:</label>
-            <!-- Si el país destino es Colombia, mostramos un select con las ciudades -->
-            <ng-container
-              *ngIf="
-                habitacion.huespedes[i].paisDestino === 'Colombia';
-                else inputCiudadDestino
-              "
-            >
-              <select
-                class="fila"
-                [(ngModel)]="habitacion.huespedes[i].ciudadDestino"
-                [disabled]="!habitacion.huespedes[i].paisDestino"
-                (change)="
-                  cambiarSelect(i, 'ciudad', habitacion.huespedes[i].ciudad)
-                "
+              <div
+                *ngIf="primerNombre2.invalid && primerNombre2.touched"
+                class="text-danger"
               >
-                <option
-                  *ngFor="let ciudad of ciudadesColombia"
-                  [value]="ciudad"
-                >
-                  {{ ciudad }}
-                </option>
-              </select>
-            </ng-container>
-            <!-- Si el país destino no es Colombia, mostramos un input de texto -->
-            <ng-template #inputCiudadDestino>
+                El campo Primer Nombre es obligatorio.
+              </div>
+            </div>
+            <!-- Segundo Nombre del huésped -->
+            <div class="fila">
+              <label class="texto-negrita-azul">Segundo Nombre:</label>
               <input
                 type="text"
                 class="fila"
-                [(ngModel)]="habitacion.huespedes[i].ciudadDestino"
-                [disabled]="!habitacion.huespedes[i].paisDestino"
+                [(ngModel)]="habitacion.huespedes[i].segundoNombre"
+                #segundoNombre2="ngModel"
+                required
                 (click)="
                   abrirModal(
                     i,
-                    'ciudadDestino',
-                    habitacion.huespedes[i].ciudadDestino
-                  )
-                "
-                (change)="
-                  sincronizarCampos(
-                    'ciudadDestino',
-                    habitacion.huespedes[i].ciudadDestino
+                    'segundoNombre',
+                    habitacion.huespedes[i].segundoNombre
                   )
                 "
               />
-            </ng-template>
+              <div *ngIf="segundoNombre2.invalid && segundoNombre2.touched" class="text-danger">
+                El campo Segundo Nombre es obligatorio.
+              </div>
+            </div>
+            <!-- Primer Apellido del huésped -->
+            <div class="fila">
+              <label class="texto-negrita-azul">Primer Apellido:</label>
+              <input
+                type="text"
+                class="fila"
+                [(ngModel)]="habitacion.huespedes[i].primerApellido"
+                #primerApellido2="ngModel"
+                required
+                (click)="
+                  abrirModal(
+                    i,
+                    'primerApellido',
+                    habitacion.huespedes[i].primerApellido
+                  )
+                "
+              />
+              <div *ngIf="primerApellido2.invalid && primerApellido2.touched" class="text-danger">
+                El campo Primer Apellido es obligatorio.
+              </div>
+            </div>
+            <!-- Segundo Apellido del huésped -->
+            <div class="fila">
+              <label class="texto-negrita-azul">Segundo Apellido:</label>
+              <input
+                type="text"
+                class="fila"
+                [(ngModel)]="habitacion.huespedes[i].segundoApellido"
+                #segundoApellido2="ngModel"
+                required
+                (click)="
+                  abrirModal(
+                    i,
+                    'segundoApellido',
+                    habitacion.huespedes[i].segundoApellido
+                  )
+                "
+              />
+              <div *ngIf="segundoApellido2.invalid && segundoApellido2.touched" class="text-danger">
+                El campo Segundo Apellido es obligatorio.
+              </div>
+            </div>
+            <!-- Dirección del huésped -->
+            <div class="fila">
+              <label class="texto-negrita-azul">Dirección:</label>
+              <input
+                type="text"
+                class="fila"
+                [(ngModel)]="habitacion.huespedes[i].direccion"
+                #direccion2="ngModel"
+                required
+                (click)="
+                  abrirModal(i, 'direccion', habitacion.huespedes[i].direccion)
+                "
+              />
+              <div *ngIf="direccion2.invalid && direccion2.touched" class="text-danger">
+                El campo Dirección es obligatorio.
+              </div>
+            </div>
+            <!-- País del huésped -->
+            <div class="fila">
+              <label class="texto-negrita-azul">País:</label>
+              <input
+                type="text"
+                class="fila"
+                [(ngModel)]="habitacion.huespedes[i].pais"
+                #pais2="ngModel"
+                required
+                (click)="abrirModal(i, 'pais', habitacion.huespedes[i].pais)"
+                (change)="cambiarPais(i, 'pais', 'ciudad')"
+              />
+              <div *ngIf="pais2.invalid && pais2.touched" class="text-danger">
+                El campo País es obligatorio.
+              </div>
+            </div>
+            <!--Ciudad-->
+            <div class="fila">
+              <label class="texto-negrita-azul">Ciudad:</label>
+              <!-- Si el país es Colombia, mostramos un select -->
+              <ng-container
+                *ngIf="
+                  habitacion.huespedes[i].pais === 'Colombia';
+                  else inputCiudad
+                "
+              >
+                <select
+                  class=""
+                  [(ngModel)]="habitacion.huespedes[i].ciudad"
+                  #ciudad2="ngModel"
+                  required
+                  [disabled]="!habitacion.huespedes[i].pais"
+                  (change)="
+                    cambiarSelect(i, 'ciudad', habitacion.huespedes[i].ciudad)
+                  "
+                >
+                  <option
+                    *ngFor="let ciudad of ciudadesColombia"
+                    [value]="ciudad"
+                  >
+                    {{ ciudad }}
+                  </option>
+                </select>
+                <div *ngIf="ciudad2.invalid && ciudad2.touched" class="text-danger">
+                  El campo Ciudad es obligatorio.
+                </div>
+              </ng-container>
+              <!-- Si el país NO es Colombia, mostramos un input -->
+              <ng-template #inputCiudad>
+                <input
+                  type="text"
+                  class="fila"
+                  [(ngModel)]="habitacion.huespedes[i].ciudad"
+                  #ciudadInput2="ngModel"
+                  required
+                  [disabled]="!habitacion.huespedes[i].pais"
+                  (click)="
+                    abrirModal(i, 'ciudad', habitacion.huespedes[i].ciudad)
+                  "
+                />
+                <div *ngIf="ciudadInput2.invalid && ciudadInput2.touched" class="text-danger">
+                  El campo Ciudad es obligatorio.
+                </div>
+              </ng-template>
+            </div>
+
+            <!-- Teléfono del huésped -->
+            <div class="fila">
+              <label class="texto-negrita-azul">Teléfono:</label>
+              <input
+                type="text"
+                class="fila"
+                [(ngModel)]="habitacion.huespedes[i].telefono"
+                #telefono2="ngModel"
+                required
+                pattern="^[0-9]+$"
+                (click)="
+                  abrirModal(i, 'telefono', habitacion.huespedes[i].telefono)
+                "
+              />
+              <div *ngIf="telefono2.invalid && telefono2.touched" class="text-danger">
+                El campo Teléfono es obligatorio.
+              </div>
+              <div
+              *ngIf="telefono2.errors?.['pattern'] && telefono2.touched"
+              class="text-danger"
+            >
+              El campo Teléfono debe contener solo números.
+            </div>
+            </div>
+            <!-- Correo electrónico del huésped -->
+            <div class="fila">
+              <label class="texto-negrita-azul">Correo electrónico:</label>
+              <input
+                type="email"
+                class="form-control"
+                [(ngModel)]="habitacion.huespedes[i].email"
+                #email2="ngModel"
+                required
+                email
+                (click)="abrirModal(i, 'email', habitacion.huespedes[i].email)"
+              />
+              <div *ngIf="email2.invalid && email2.touched" class="text-danger">
+                El campo Correo electrónico es obligatorio.
+              </div>
+              <div
+                *ngIf="email2.errors?.['email'] && email2.touched"
+                class="text-danger"
+              >
+                El formato del Correo electrónico no es válido.
+              </div>
+            </div>
+            <!-- País Origen del huésped -->
+            <div class="fila">
+              <label class="texto-negrita-azul">País Origen:</label>
+              <input
+                type="text"
+                class="fila"
+                [(ngModel)]="habitacion.huespedes[i].paisOrigen"
+                #paisOrigen2="ngModel"
+                required
+                (click)="
+                  abrirModal(
+                    i,
+                    'paisOrigen',
+                    habitacion.huespedes[i].paisOrigen
+                  )
+                "
+                (change)="
+                  cambiarPaisOrigen(
+                    habitacion.huespedes[i].id,
+                    'paisOrigen',
+                    'ciudadOrigen'
+                  )
+                "
+              />
+              <div *ngIf="paisOrigen2.invalid && paisOrigen2.touched" class="text-danger">
+                El campo País Origen es obligatorio.
+              </div>
+            </div>
+            <!-- Ciudad Origen del huésped -->
+            <div class="fila">
+              <label class="texto-negrita-azul">Ciudad Origen:</label>
+              <!-- Si el país origen es Colombia, mostramos un select con las ciudades -->
+              <ng-container
+                *ngIf="
+                  habitacion.huespedes[i].paisOrigen === 'Colombia';
+                  else inputCiudadOrigen
+                "
+              >
+                <select
+                  class=""
+                  [(ngModel)]="habitacion.huespedes[i].ciudadOrigen"
+                  #ciudadOrigen2="ngModel"
+                  required
+                  [disabled]="!habitacion.huespedes[i].paisOrigen"
+                  (change)="
+                    cambiarSelect(i, 'ciudad', habitacion.huespedes[i].ciudad)
+                  "
+                >
+                  <option
+                    *ngFor="let ciudad of ciudadesColombia"
+                    [value]="ciudad"
+                  >
+                    {{ ciudad }}
+                  </option>
+                </select>
+                <div *ngIf="ciudadOrigen2.invalid && ciudadOrigen2.touched" class="text-danger">
+                  El campo Ciudad Origen es obligatorio.
+                </div>
+              </ng-container>
+              <!-- Si el país origen no es Colombia, mostramos un input de texto -->
+              <ng-template #inputCiudadOrigen>
+                <input
+                  type="text"
+                  class="fila"
+                  [(ngModel)]="habitacion.huespedes[i].ciudadOrigen"
+                  #ciudadOrigenInput2="ngModel"
+                  required
+                  [disabled]="!habitacion.huespedes[i].paisOrigen"
+                  (click)="
+                    abrirModal(
+                      i,
+                      'ciudadOrigen',
+                      habitacion.huespedes[i].ciudadOrigen
+                    )
+                  "
+                />
+                <div *ngIf="ciudadOrigenInput2.invalid && ciudadOrigenInput2.touched" class="text-danger">
+                  El campo Ciudad Origen es obligatorio.
+                </div>
+              </ng-template>
+            </div>
+          </div>
+
+          <div class="datos-destino">
+            <h3>Datos de Destino</h3>
+
+            <!-- País Destino del huésped -->
+            <div class="fila">
+              <label class="texto-negrita-azul">País Destino:</label>
+              <input
+                type="text"
+                class="fila"
+                [(ngModel)]="habitacion.huespedes[i].paisDestino"
+                #paisDestino2="ngModel"
+                required
+                (click)="
+                  abrirModal(
+                    i,
+                    'paisDestino',
+                    habitacion.huespedes[i].paisDestino
+                  )
+                "
+                (change)="
+                  cambiarPaisDestino(
+                    habitacion.huespedes[i].id,
+                    'paisDestino',
+                    'ciudadDestino'
+                  )
+                "
+              />
+              <div *ngIf="paisDestino2.invalid && paisDestino2.touched" class="text-danger">
+                El campo País Destino es obligatorio.
+              </div>
+            </div>
+            <!-- Ciudad Destino del huésped -->
+            <div class="fila">
+              <label class="texto-negrita-azul">Ciudad Destino:</label>
+              <!-- Si el país destino es Colombia, mostramos un select con las ciudades -->
+              <ng-container
+                *ngIf="
+                  habitacion.huespedes[i].paisDestino === 'Colombia';
+                  else inputCiudadDestino
+                "
+              >
+                <select
+                  class=""
+                  [(ngModel)]="habitacion.huespedes[i].ciudadDestino"
+                  #ciudadDestino2="ngModel"
+                  required
+                  [disabled]="!habitacion.huespedes[i].paisDestino"
+                  (change)="
+                    cambiarSelect(i, 'ciudad', habitacion.huespedes[i].ciudad)
+                  "
+                >
+                  <option
+                    *ngFor="let ciudad of ciudadesColombia"
+                    [value]="ciudad"
+                  >
+                    {{ ciudad }}
+                  </option>
+                </select>
+                <div *ngIf="ciudadDestino2.invalid && ciudadDestino2.touched" class="text-danger">
+                  El campo Ciudad Destino es obligatorio.
+                </div>
+              </ng-container>
+              <!-- Si el país destino no es Colombia, mostramos un input de texto -->
+              <ng-template #inputCiudadDestino>
+                <input
+                  type="text"
+                  class="fila"
+                  [(ngModel)]="habitacion.huespedes[i].ciudadDestino"
+                  #ciudadDestinoInput2="ngModel"
+                  required
+                  [disabled]="!habitacion.huespedes[i].paisDestino"
+                  (click)="
+                    abrirModal(
+                      i,
+                      'ciudadDestino',
+                      habitacion.huespedes[i].ciudadDestino
+                    )
+                  "
+                  (change)="
+                    sincronizarCampos(
+                      'ciudadDestino',
+                      habitacion.huespedes[i].ciudadDestino
+                    )
+                  "
+                />
+                <div *ngIf="ciudadDestinoInput2.invalid && ciudadDestinoInput2.touched" class="text-danger">
+                  El campo Ciudad Destino es obligatorio.
+                </div>
+              </ng-template>
+            </div>
+          </div>
+
+          <!-- Huésped Principal -->
+          <div *ngIf="verificarHuespedPrincipal(habitacion.huespedes[i])">
+            <div class="huesped-principal">
+              <h5>Huesped Principal</h5>
+              <i class="fa-solid fa-circle-check" style="color: #0ba001; font-size: 2rem;"></i>
+            </div>
           </div>
         </div>
-
-        <!-- Huésped Principal -->
-        <div>
-          <div class="huesped-principal">
-          <h6>Huesped Principal</h6>
-          <input
-            type="checkbox"
-            class="fila"
-            [(ngModel)]="habitacion.huespedes[i].huespedPrincipal"
-            [disabled]="true"
-          />
-        </div>
-        </div>
-      </div>
       </div>
     </div>
   </div>
 </div>
 
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button
   type="button"
   class="btn btn-primary"
-  (click)="guardarCambios()"
+  (click)="verificarCampos()"
 >
-  Guardar Cambios
+  Verificar Campos
 </button>
+<div class="">
+  <img src="assets/logocomando.webp" width="200" height="100">
+</div>

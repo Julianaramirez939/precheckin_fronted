@@ -7,6 +7,7 @@ import * as bootstrap from 'bootstrap';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-huesped',
@@ -16,6 +17,13 @@ import { HttpClientModule } from '@angular/common/http';
   styleUrls: ['./huesped.component.css'],
 })
 export class HuespedComponent implements OnInit {
+verificarHuespedPrincipal(huesped: any) {
+  console.log("primer huesped en verificar primerHuesped",this.primerHuesped);
+  console.log("huesped en verificar primerHuesped",huesped);
+  console.log("this.primerHuesped === huesped",this.primerHuesped === huesped);
+
+  return this.primerHuesped === huesped;
+}
   reserva: any;
   habitacion: any;
   tiposDocumentos = [
@@ -304,4 +312,69 @@ export class HuespedComponent implements OnInit {
 
     this.guardarCambios();
   }
+  verificarCampos() {
+    let camposFaltantes: string[] = [];
+    
+    this.reserva?.habitaciones.forEach((habitacion:any, habitacionIndex:any) => {
+      habitacion.huespedes.forEach((huesped:any, huespedIndex:any) => {
+        if (!huesped.tipoDocumento) {
+          camposFaltantes.push(`Tipo de Documento (Huésped ${huespedIndex + 1} en Habitación ${habitacion.habitacion.nombre_tipo_habitacion})`);
+        }
+        if (!huesped.documento) {
+          camposFaltantes.push(`Documento (Huésped ${huespedIndex + 1} en Habitación ${habitacion.habitacion.nombre_tipo_habitacion})`);
+        }
+        if (!huesped.primerNombre) {
+          camposFaltantes.push(`Primer Nombre (Huésped ${huespedIndex + 1} en Habitación ${habitacion.habitacion.nombre_tipo_habitacion})`);
+        }
+        if (!huesped.primerApellido) {
+          camposFaltantes.push(`Primer Apellido (Huésped ${huespedIndex + 1} en Habitación ${habitacion.habitacion.nombre_tipo_habitacion})`);
+        }
+        if (!huesped.direccion) {
+          camposFaltantes.push(`Dirección (Huésped ${huespedIndex + 1} en Habitación ${habitacion.habitacion.nombre_tipo_habitacion})`);
+        }
+        if (!huesped.pais) {
+          camposFaltantes.push(`País (Huésped ${huespedIndex + 1} en Habitación ${habitacion.habitacion.nombre_tipo_habitacion})`);
+        }
+        if (!huesped.ciudad) {
+          camposFaltantes.push(`Ciudad (Huésped ${huespedIndex + 1} en Habitación ${habitacion.habitacion.nombre_tipo_habitacion})`);
+        }
+        if (!huesped.telefono) {
+          camposFaltantes.push(`Teléfono (Huésped ${huespedIndex + 1} en Habitación ${habitacion.habitacion.nombre_tipo_habitacion})`);
+        }
+        if (!huesped.email) {
+          camposFaltantes.push(`Correo Electrónico (Huésped ${huespedIndex + 1} en Habitación ${habitacion.habitacion.nombre_tipo_habitacion})`);
+        }
+        if (!huesped.paisOrigen) {
+          camposFaltantes.push(`País Origen (Huésped ${huespedIndex + 1} en Habitación ${habitacion.habitacion.nombre_tipo_habitacion})`);
+        }
+        if (!huesped.ciudadOrigen) {
+          camposFaltantes.push(`Ciudad Origen (Huésped ${huespedIndex + 1} en Habitación ${habitacion.habitacion.nombre_tipo_habitacion})`);
+        }
+        if (!huesped.paisDestino) {
+          camposFaltantes.push(`País Destino (Huésped ${huespedIndex + 1} en Habitación ${habitacion.habitacion.nombre_tipo_habitacion})`);
+        }
+        if (!huesped.ciudadDestino) {
+          camposFaltantes.push(`Ciudad Destino (Huésped ${huespedIndex + 1} en Habitación ${habitacion.habitacion.nombre_tipo_habitacion})`);
+        }
+      });
+    });
+  
+    if (camposFaltantes.length > 0) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Campos incompletos',
+        html: `<div style="max-height: 300px; overflow-y: auto; text-align: left;">
+              Faltan los siguientes campos por llenar:<br>
+              <ul>${camposFaltantes.map(campo => `<li>${campo}</li>`).join('')}</ul>
+            </div>`,
+      });
+    } else {
+      Swal.fire({
+        icon: 'success',
+        title: 'OK',
+        text: "Pre-checkin exitoso"
+      });
+    }
+  }
+  
 }
